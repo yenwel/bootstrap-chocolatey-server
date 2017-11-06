@@ -22,13 +22,11 @@ else
     Write-Host "IIS already installed"
 }
 
-
 choco install IIS-ASPNET45 --source windowsfeatures -y
 
 choco install chocolatey.server -y
 
 refreshenv
-
 
 Import-Module WebAdministration
 
@@ -67,6 +65,8 @@ else
     $iisApp | Set-ItemProperty -Name "applicationPool" -Value $iisAppPoolName
 }
 
+cd  c:/
+
 $Command = "icacls ""$directoryPath"" /grant ""IIS_IUSRS"":(OI)(CI)(R)"
 cmd.exe /c $Command
 
@@ -74,4 +74,11 @@ $Command = "icacls ""$directoryPath"" /grant ""IUSR"":(OI)(CI)(R)"
 cmd.exe /c $Command
 
 $Command = "icacls ""$directoryPath"" /grant ""IIS AppPool\$iisAppPoolName"":(OI)(CI)(R)"
+cmd.exe /c $Command
+
+
+$Command = "icacls ""$directoryPath\App_Data"" /grant ""IIS_IUSRS"":(OI)(CI)(M)"
+cmd.exe /c $Command
+
+$Command = "icacls ""$directoryPath\App_Data"" /grant ""IIS AppPool\$iisAppPoolName"":(OI)(CI)(M)"
 cmd.exe /c $Command
